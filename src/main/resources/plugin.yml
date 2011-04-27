@@ -1,0 +1,8 @@
+name: Chronoss
+main: need.chronos.Chronos
+version: 0.0.1
+commands:
+   onan:
+    description: Sends.
+    usage:
+     /<command>
