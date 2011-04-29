@@ -29,7 +29,6 @@ public class Chronos extends JavaPlugin
 	@Override
 	public void onEnable() 
 	{ 
-		chronoszones.add(new ChronosTimeZone());
 		PlayerListener p = new PlayerListener() 
 		{
 	
@@ -51,6 +50,10 @@ public class Chronos extends JavaPlugin
 	        @Override
 	        public void onPlayerRespawn(PlayerRespawnEvent event) 
 	        {
+	        	for(ChronosPlayer player : chronosplayers)
+	        	{
+	        		player.onPlayerRespawn(event);
+	        	}
 	        	updateAll();
 	        }
 	
@@ -89,7 +92,7 @@ public class Chronos extends JavaPlugin
 	{
 		for(ChronosPlayer chronosplayer: chronosplayers)
 		{
-			chronosplayer.update();
+			chronosplayer.Update();
 		}
 	}
 	

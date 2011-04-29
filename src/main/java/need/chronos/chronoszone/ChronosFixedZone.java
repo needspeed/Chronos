@@ -4,25 +4,26 @@ import need.chronos.Time;
 
 import org.bukkit.entity.Player;
 
-public class ChronosFixedZone implements ChronosZone
+public class ChronosFixedZone extends ChronosZone
 {
 
 	Time time;
 	
-	public ChronosFixedZone(Time time)
+	public ChronosFixedZone(String worldName, Time time)
 	{
+		super(worldName);
 		this.time = time;
 	}
 	
-	public ChronosFixedZone(long time, boolean relative)
+	public ChronosFixedZone(String worldName, long time, boolean relative)
 	{
-		this.time = new Time(time,relative);
+		this(worldName,new Time(time,relative));
 	}
 	
 	@Override
 	public boolean affectsPlayer(Player player)
 	{
-		return true;
+		return isInWorld(player);
 	}
 
 	@Override
