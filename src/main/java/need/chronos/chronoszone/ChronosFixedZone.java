@@ -13,6 +13,7 @@ public class ChronosFixedZone extends ChronosZone
 	{
 		super(worldName);
 		this.time = time;
+		priority = 2; //hardcoded, needs to be changed
 	}
 	
 	public ChronosFixedZone(String worldName, long time, boolean relative)

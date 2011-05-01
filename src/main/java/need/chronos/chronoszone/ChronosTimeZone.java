@@ -1,7 +1,8 @@
 package need.chronos.chronoszone;
 
 
-import java.util.List;
+import java.util.Stack;
+
 import need.chronos.Time;
 import org.bukkit.entity.Player;
 import static need.chronos.ChronosUtil.*;
@@ -38,30 +39,28 @@ public class ChronosTimeZone extends ChronosZone
 	// /chronos addzone timezone <worldname> <scale> <offset> [all|group|player]
 	// /chronos addzone timezone <worldname> <scale> <rel|ab> [all|group|player]
 	// /chronos addzone timezone <worldname> <scale> <offset> <rel|ab> [all|group|player]
-	public ChronosTimeZone(List<String> cargs)
+	public ChronosTimeZone(Stack<String> cargs)
 	{
-		super(cargs.get(0));
-		cargs.remove(0);
-		if(StringIsNumber(cargs.get(0)))
+		super(cargs.pop());
+		if(StringIsNumber(cargs.peek()))
 		{
-			scale = Integer.decode(cargs.get(0));
-			cargs.remove(0);
+			scale = Integer.decode(cargs.pop());
 		}
-		if(StringIsNumber(cargs.get(0)))
+		if(StringIsNumber(cargs.peek()))
 		{
-			offset = Integer.decode(cargs.get(0));
-			cargs.remove(0);
+			offset = Integer.decode(cargs.pop());
 		}
-		if(cargs.get(0).equalsIgnoreCase("rel") || cargs.get(0).equalsIgnoreCase("+"))
+		if(cargs.peek().equalsIgnoreCase("rel") || cargs.peek().equalsIgnoreCase("+"))
 		{
 			relative = true;
-			cargs.remove(0);
+			cargs.pop();
 		}
-		else if (cargs.get(0).equalsIgnoreCase("ab") || cargs.get(0).equalsIgnoreCase("-"))
+		else if (cargs.peek().equalsIgnoreCase("ab") || cargs.peek().equalsIgnoreCase("-"))
 		{
 			relative = false;
-			cargs.remove(0);
+			cargs.pop();
 		}
+		priority = 0; //hardcoded, needs to be changed
 	}
 	@Override
 	public boolean affectsPlayer(Player player)

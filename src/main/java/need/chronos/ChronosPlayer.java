@@ -2,6 +2,7 @@ package need.chronos;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 import need.chronos.chronoszone.ChronosZone;
 
@@ -40,13 +41,13 @@ public class ChronosPlayer
 	public void AddZone(ChronosZone zone)
 	{
 		chronoszones.add(zone);
-		//ToDo: Sort list
+		Collections.sort(chronoszones);
 	}
 	
 	public void AddZones(Collection<ChronosZone> zones)
 	{
 		chronoszones.addAll(zones);
-		//ToDo: Sort list
+		Collections.sort(chronoszones);
 	}
 	
 	public void RemoveZone(ChronosZone zone)
@@ -80,7 +81,7 @@ public class ChronosPlayer
 
 	public boolean IsInGroup(String group)
 	{
-		return group.equals(player.getName()) || groups.contains(group);
+		return group.equals(player.getName()) || groups.contains(group) || group.equalsIgnoreCase("all");
 	}
 
 	public void onPlayerRespawn(PlayerRespawnEvent event)
@@ -89,6 +90,14 @@ public class ChronosPlayer
 			player = event.getPlayer();
 	}
 
+	public void AddZoneIfIsInGroup(String group, ChronosZone zone)
+	{
+		if(IsInGroup(group))
+		{
+			AddZone(zone);
+		}
+	}
+	
 	public void setPos1()
 	{
 		x1 = player.getLocation().getBlockX();

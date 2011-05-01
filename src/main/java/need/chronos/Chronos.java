@@ -1,6 +1,8 @@
 package need.chronos;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Stack;
 import java.util.logging.Logger;
 
 import need.chronos.chronoszone.ChronosTimeZone;
@@ -72,7 +74,7 @@ public class Chronos extends JavaPlugin
 	    Logger.getLogger("Minecraft").info(this.getDescription().getName() + " " + this.getDescription().getVersion() + " is enabled.");
 	}
 	
-	public boolean isaChronosPlayer(Player player)
+	public boolean isAChronosPlayer(Player player)
 	{
 		for(ChronosPlayer cp: chronosplayers)if(cp.getPlayer().equals(player))return true;
 		return false;
@@ -96,4 +98,10 @@ public class Chronos extends JavaPlugin
 		}
 	}
 	
+	Stack<String> stringArrayToStack(String[] array)
+	{
+		Stack<String> stack = new Stack<String>();
+		stack.addAll(java.util.Arrays.asList(array));
+		return stack;
+	}
 }
