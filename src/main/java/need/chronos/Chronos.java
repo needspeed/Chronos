@@ -1,11 +1,9 @@
 package need.chronos;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Stack;
 import java.util.logging.Logger;
 
-import need.chronos.chronoszone.ChronosTimeZone;
 import need.chronos.chronoszone.ChronosZone;
 
 import org.bukkit.command.Command;
@@ -37,7 +35,7 @@ public class Chronos extends JavaPlugin
 	        @Override
 	        public void onPlayerMove(PlayerMoveEvent event) 
 	        {
-	        	event.getPlayer().sendMessage(isaChronosPlayer(event.getPlayer())+"");
+	        	event.getPlayer().sendMessage(isAChronosPlayer(event.getPlayer())+"");
 	        	event.getPlayer().sendMessage(chronosplayers.toString());
 	        	updateAll();
 	        }
