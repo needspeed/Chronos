@@ -1,13 +1,12 @@
 package need.chronos;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Stack;
 import java.util.logging.Logger;
-
-import need.chronos.chronoszone.ChronosTimeZone;
 import need.chronos.chronoszone.ChronosZone;
-
+import need.chronos.command.AddZone;
+import need.chronos.command.ChCommand;
+import need.chronos.command.ListZones;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -23,30 +22,30 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class Chronos extends JavaPlugin
 {
 	private ArrayList<ChronosPlayer> chronosplayers = new ArrayList<ChronosPlayer>();
-	private ArrayList<ChronosZone> chronoszones = new ArrayList<ChronosZone>();
+	public ArrayList<ChronosZone> chronoszones = new ArrayList<ChronosZone>();
+	private ChCommand[] cmds = new ChCommand[]{new AddZone("addzone"),new ListZones("listzones")};
 
 	@Override
-	public void onDisable() {}
+ 	public void onDisable() {}
 
 	@Override
 	public void onEnable() 
-	{ 
+	{
+		ChCommand.SetChronosInstance(this);
 		PlayerListener p = new PlayerListener() 
 		{
 	
 	        @Override
 	        public void onPlayerMove(PlayerMoveEvent event) 
 	        {
-	        	event.getPlayer().sendMessage(isaChronosPlayer(event.getPlayer())+"");
-	        	event.getPlayer().sendMessage(chronosplayers.toString());
-	        	updateAll();
+	        	Update(event.getPlayer());
 	        }
 	
 	        @Override
 	        public void onPlayerJoin(PlayerJoinEvent event) 
 	        {	        	
 	        	chronosplayers.add(new ChronosPlayer(event.getPlayer(),chronoszones));
-	        	updateAll();
+	        	Update(event.getPlayer());
 	        }
 	
 	        @Override
@@ -56,13 +55,13 @@ public class Chronos extends JavaPlugin
 	        	{
 	        		player.onPlayerRespawn(event);
 	        	}
-	        	updateAll();
+	        	Update(event.getPlayer());
 	        }
 	
 	        @Override
 	        public void onPlayerTeleport(PlayerTeleportEvent event) 
 	        {
-	        	updateAll();
+	        	Update(event.getPlayer());
 	        }
 
 		};
@@ -82,20 +81,62 @@ public class Chronos extends JavaPlugin
 	
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) 
     {		
-		if (cmd.getName().equals("chronos"))
+		for(ChCommand chCommand : cmds)
 		{
-			
-			return true;
-    	}
-		else return false;
+			Stack<String> cargs = stringArrayToStack(args);
+			String cmdName = cargs.pop();
+			if(chCommand.IsResponsibleFor(cmdName))
+			{
+				return chCommand.handleCommand(sender, cargs);
+			}
+		}
+		return false;
 	}	
 	
-	public void updateAll()
+	public void UpdateAll()
 	{
 		for(ChronosPlayer chronosplayer: chronosplayers)
 		{
 			chronosplayer.Update();
 		}
+	}
+	
+	public void Update(Player player)
+	{
+		for(ChronosPlayer chronosplayer: chronosplayers)
+		{
+			if(chronosplayer.getPlayer().equals(player))
+			{
+				chronosplayer.Update();
+			}
+		}
+	}
+	
+	public void AddZoneToPlayerIfIsInGroupAndUpdate(ChronosZone zone, Stack<String> groups)
+	{
+		for(ChronosPlayer chronosplayer: chronosplayers)
+		{
+			for(String group : groups)
+			{
+				if(chronosplayer.IsInGroup(group))
+				{
+					chronosplayer.AddZone(zone);
+				}
+			}
+			chronosplayer.Update();
+		}
+	}
+
+	public ChronosPlayer GetChronosPlayer(Player player)
+	{
+		for(ChronosPlayer chronosplayer: chronosplayers)
+		{
+			if(chronosplayer.getPlayer().equals(player))
+			{
+				return chronosplayer;
+			}
+		}
+		return null;
 	}
 	
 	Stack<String> stringArrayToStack(String[] array)

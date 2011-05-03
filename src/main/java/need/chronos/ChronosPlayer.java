@@ -2,7 +2,7 @@ package need.chronos;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.TreeSet;
 
 import need.chronos.chronoszone.ChronosZone;
 
@@ -12,7 +12,7 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 public class ChronosPlayer
 {
 	public  int x1, z1, x2, z2;
-	private ArrayList<ChronosZone> chronoszones = new ArrayList<ChronosZone>();
+	private TreeSet<ChronosZone> chronoszones = new TreeSet<ChronosZone>();
 	private ArrayList<String> groups;
 	private Player player;
 	
@@ -41,13 +41,11 @@ public class ChronosPlayer
 	public void AddZone(ChronosZone zone)
 	{
 		chronoszones.add(zone);
-		Collections.sort(chronoszones);
 	}
 	
 	public void AddZones(Collection<ChronosZone> zones)
 	{
 		chronoszones.addAll(zones);
-		Collections.sort(chronoszones);
 	}
 	
 	public void RemoveZone(ChronosZone zone)

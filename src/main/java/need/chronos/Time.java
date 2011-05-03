@@ -20,4 +20,10 @@ public class Time
 	{
 		return relative;
 	}
+	
+	@Override
+	public String toString()
+	{
+		return time + (relative?" rel":" ab");
+	}
 }

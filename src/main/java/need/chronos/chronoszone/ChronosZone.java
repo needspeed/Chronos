@@ -8,10 +8,13 @@ public abstract class ChronosZone implements Comparable<ChronosZone>
 {
 	protected String worldName;
 	protected byte priority;
+	private int id;
+	private static int idcount = 0;
 	
 	public ChronosZone(String worldName)
 	{
 		this.worldName = worldName;
+		id = idcount++;
 	}
 	
 	public abstract boolean affectsPlayer(Player player);
@@ -25,6 +28,13 @@ public abstract class ChronosZone implements Comparable<ChronosZone>
 	
 	public int compareTo(ChronosZone zone)
 	{
-		return priority - zone.priority;
+		return zone.priority - priority;
 	}
+	
+	public int Id()
+	{
+		return id;
+	}
+	
+	public abstract String GetDescription();
 }

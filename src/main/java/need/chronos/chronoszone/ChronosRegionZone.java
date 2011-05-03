@@ -1,7 +1,6 @@
 package need.chronos.chronoszone;
 
 import java.util.Stack;
-import need.chronos.ChronosPlayer;
 import need.chronos.Time;
 import static need.chronos.ChronosUtil.*;
 import org.bukkit.entity.Player;
@@ -22,7 +21,7 @@ public class ChronosRegionZone extends ChronosZone
 	}
 	
 	// /chronos addzone regionzone <time> <rel|ab> <player|group|all> --> <worldname> <x1> <z1> <x2> <z2> <time> <re|ab>
-	public ChronosRegionZone(Stack<String> cargs) throws Exception
+	public ChronosRegionZone(Stack<String> cargs)
 	{
 		this(
 				cargs.pop(),
@@ -37,7 +36,7 @@ public class ChronosRegionZone extends ChronosZone
 			);
 		priority = 1; //hardcoded, needs to be changed
 	}
-	public static String isValid(Stack<String> cargs)
+	public static String IsValid(Stack<String> cargs)
 	{
 		if(
 			cargs.size() >= 7 && 
@@ -70,6 +69,12 @@ public class ChronosRegionZone extends ChronosZone
 	public Time getTime(Player player)
 	{
 		return time;
+	}
+
+	@Override
+	public String GetDescription()
+	{
+		return String.format("%1$: %2$; world: %3$; time: %4$; loc: (%5$|%6$)-(%7$|%8$)", Id(),"region",worldName,time.toString(),x1,z1,x2,z2);
 	}
 	
 }

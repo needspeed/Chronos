@@ -74,4 +74,9 @@ public class ChronosTimeZone extends ChronosZone
 		return new Time(-scale*player.getLocation().getBlockZ()+offset, relative);
 	}
 
+	@Override
+	public String GetDescription()
+	{
+		return String.format("%1$: %2$; world: %3$; offset: %4$ offset/block: %5$ %6$",Id(),"timezone",worldName,offset, scale,(relative?"rel":"ab"));
+	}
 }
