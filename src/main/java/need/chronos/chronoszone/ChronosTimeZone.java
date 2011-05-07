@@ -42,6 +42,7 @@ public class ChronosTimeZone extends ChronosZone
 	public ChronosTimeZone(Stack<String> cargs)
 	{
 		super(cargs.pop());
+		for(String arg:cargs){System.out.println(arg);}
 		if(StringIsNumber(cargs.peek()))
 		{
 			scale = Integer.decode(cargs.pop());
@@ -77,6 +78,6 @@ public class ChronosTimeZone extends ChronosZone
 	@Override
 	public String GetDescription()
 	{
-		return String.format("%1$: %2$; world: %3$; offset: %4$ offset/block: %5$ %6$",Id(),"timezone",worldName,offset, scale,(relative?"rel":"ab"));
+		return String.format("%1$d: %2$s; world: %3$s; offset: %4$d offset/block: %5$d %6$s",Id(),"timezone",worldName,offset, scale,(relative?"rel":"ab"));
 	}
 }

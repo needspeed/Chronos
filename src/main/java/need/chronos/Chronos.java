@@ -7,6 +7,8 @@ import need.chronos.chronoszone.ChronosZone;
 import need.chronos.command.AddZone;
 import need.chronos.command.ChCommand;
 import need.chronos.command.ListZones;
+import need.chronos.command.Selection;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -23,7 +25,7 @@ public class Chronos extends JavaPlugin
 {
 	private ArrayList<ChronosPlayer> chronosplayers = new ArrayList<ChronosPlayer>();
 	public ArrayList<ChronosZone> chronoszones = new ArrayList<ChronosZone>();
-	private ChCommand[] cmds = new ChCommand[]{new AddZone("addzone"),new ListZones("listzones")};
+	private ChCommand[] cmds = new ChCommand[]{new AddZone("addzone"),new ListZones("listzones"), new Selection("pos1",true), new Selection("pos2",false)};
 
 	@Override
  	public void onDisable() {}
@@ -32,6 +34,10 @@ public class Chronos extends JavaPlugin
 	public void onEnable() 
 	{
 		ChCommand.SetChronosInstance(this);
+		for(Player player : getServer().getOnlinePlayers())
+		{
+			chronosplayers.add(new ChronosPlayer(player,chronoszones));
+		}
 		PlayerListener p = new PlayerListener() 
 		{
 	
@@ -81,10 +87,11 @@ public class Chronos extends JavaPlugin
 	
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) 
     {		
+		Stack<String> cargs = stringArrayToStack(args);
+		String cmdName = cargs.pop();
+		System.out.println(cmdName);
 		for(ChCommand chCommand : cmds)
 		{
-			Stack<String> cargs = stringArrayToStack(args);
-			String cmdName = cargs.pop();
 			if(chCommand.IsResponsibleFor(cmdName))
 			{
 				return chCommand.handleCommand(sender, cargs);
@@ -112,7 +119,7 @@ public class Chronos extends JavaPlugin
 		}
 	}
 	
-	public void AddZoneToPlayerIfIsInGroupAndUpdate(ChronosZone zone, Stack<String> groups)
+	public void AddZoneToPlayersIfIsInGroupAndUpdate(ChronosZone zone, Stack<String> groups)
 	{
 		for(ChronosPlayer chronosplayer: chronosplayers)
 		{
@@ -142,7 +149,10 @@ public class Chronos extends JavaPlugin
 	Stack<String> stringArrayToStack(String[] array)
 	{
 		Stack<String> stack = new Stack<String>();
-		stack.addAll(java.util.Arrays.asList(array));
+		for(int i = array.length-1;i>=0;i--)
+		{
+			stack.add(array[i]);
+		}
 		return stack;
 	}
 }

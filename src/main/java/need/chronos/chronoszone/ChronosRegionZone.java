@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 
 public class ChronosRegionZone extends ChronosZone
 {
-	double x1,x2,z1,z2;
+	int x1,x2,z1,z2;
 	Time time;
 	
 	public ChronosRegionZone(String worldName,int x1, int z1,int x2,int z2,Time time)
@@ -31,21 +31,22 @@ public class ChronosRegionZone extends ChronosZone
 				Integer.decode(cargs.pop()),
 				new Time(
 						Integer.decode(cargs.pop()),
-						Integer.decode(cargs.pop()).equals("rel")
+						cargs.pop().equals("rel")
 						)
 			);
 		priority = 1; //hardcoded, needs to be changed
 	}
 	public static String IsValid(Stack<String> cargs)
 	{
+		int len = cargs.size();
 		if(
 			cargs.size() >= 7 && 
-			StringIsNumber(cargs.get(1)) && 
-			StringIsNumber(cargs.get(2)) && 
-			StringIsNumber(cargs.get(3)) && 
-			StringIsNumber(cargs.get(4)) && 
-			StringIsNumber(cargs.get(5)) && 
-			(cargs.get(6).equalsIgnoreCase("ab")||cargs.get(6).equalsIgnoreCase("rel"))
+			StringIsNumber(cargs.get(len-2)) && 
+			StringIsNumber(cargs.get(len-3)) && 
+			StringIsNumber(cargs.get(len-4)) && 
+			StringIsNumber(cargs.get(len-5)) && 
+			StringIsNumber(cargs.get(len-6)) && 
+			(cargs.get(len-7).equalsIgnoreCase("ab")||cargs.get(6).equalsIgnoreCase("rel"))
 		  )
 		{
 			return null;
@@ -58,10 +59,10 @@ public class ChronosRegionZone extends ChronosZone
 	{
 		return isInWorld(p)&&
 		(
-				x1<p.getLocation().getX()&&
-				x2>p.getLocation().getX()&& 
-				z1<p.getLocation().getZ()&&
-				z2>p.getLocation().getZ()
+				x1-1<p.getLocation().getX()&&
+				x2+1>p.getLocation().getX()&& 
+				z1-1<p.getLocation().getZ()&&
+				z2+1>p.getLocation().getZ()
 		);
 	}
 
@@ -74,7 +75,7 @@ public class ChronosRegionZone extends ChronosZone
 	@Override
 	public String GetDescription()
 	{
-		return String.format("%1$: %2$; world: %3$; time: %4$; loc: (%5$|%6$)-(%7$|%8$)", Id(),"region",worldName,time.toString(),x1,z1,x2,z2);
+		return String.format("%1$d: %2$s; world: %3$s; time: %4$s; loc: (%5$d|%6$d)-(%7$d|%8$d)", Id(),"region",worldName,time.toString(),x1,z1,x2,z2);
 	}
 	
 }

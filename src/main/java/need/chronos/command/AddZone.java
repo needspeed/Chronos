@@ -24,7 +24,21 @@ public class AddZone extends ChCommand
 	public boolean handleCommand(CommandSender sender, Stack<String> args)
 	{
 		String zoneName = args.pop();
+		System.out.println(zoneName);
 		ChronosZone zone = null;
+		
+		if(sender instanceof Player)
+		{
+			args.add(((Player)sender).getWorld().getName());
+		}
+		else if(sender instanceof ConsoleCommandSender)
+		{
+			if(chronos.getServer().getWorld(args.peek())==null);
+			{
+				sender.sendMessage("World doesn't exist");
+				return false;
+			}
+		}
 		if(zoneName.equalsIgnoreCase("timezone"))
 		{
 			zone = new ChronosTimeZone(args);
@@ -34,17 +48,18 @@ public class AddZone extends ChCommand
 			if(sender instanceof Player)
 			{
 				ChronosPlayer player = chronos.GetChronosPlayer((Player)sender);
-				args.add(0,new Integer(player.z2).toString());
-				args.add(0,new Integer(player.x2).toString());
-				args.add(0,new Integer(player.z1).toString());
-				args.add(0,new Integer(player.x1).toString());
-				args.add(0,player.getPlayer().getWorld().getName());
-			}
-			else if(sender instanceof ConsoleCommandSender)
-			{
-				if(chronos.getServer().getWorld(args.peek())==null);
+				try
 				{
-					sender.sendMessage("World doesn't exist");
+					int len = args.size();
+					args.add(len-1,new Integer(player.x1).toString());
+					args.add(len-1,new Integer(player.z1).toString());
+					args.add(len-1,new Integer(player.x2).toString());
+					args.add(len-1,new Integer(player.z2).toString());
+				}
+				catch(NullPointerException ex)
+				{
+					sender.sendMessage("No selection found");
+					return false;
 				}
 			}
 			
@@ -75,7 +90,7 @@ public class AddZone extends ChCommand
 		if(zone != null)
 		{
 			chronos.chronoszones.add(zone);
-			chronos.AddZoneToPlayerIfIsInGroupAndUpdate(zone, args);
+			chronos.AddZoneToPlayersIfIsInGroupAndUpdate(zone, args);
 			return true;
 		}
 		return false;

@@ -13,7 +13,7 @@ public class ChronosPlayer
 {
 	public  int x1, z1, x2, z2;
 	private TreeSet<ChronosZone> chronoszones = new TreeSet<ChronosZone>();
-	private ArrayList<String> groups;
+	private ArrayList<String> groups = new ArrayList<String>();
 	private Player player;
 	
 	public ChronosPlayer(Player player)
@@ -63,17 +63,14 @@ public class ChronosPlayer
 				player.setPlayerTime(time.getTime(), time.isRelative());
 				player.sendMessage("Your offset is: " + player.getPlayerTimeOffset());
 				player.sendMessage("Your time is: " + player.getPlayerTime());
-				break;
+				return;
 			}
 		}
+		player.resetPlayerTime();
 	}
 
 	public void AddToGroup(String group)
 	{
-		if(groups == null)
-		{
-			groups = new ArrayList<String>();
-		}
 		groups.add(group);
 	}
 
@@ -100,12 +97,14 @@ public class ChronosPlayer
 	{
 		x1 = player.getLocation().getBlockX();
 		z1 = player.getLocation().getBlockZ();
+		System.out.println(x1+","+z1);
 	}
 	
 	public void setPos2()
 	{
 		x2 = player.getLocation().getBlockX();
 		z2 = player.getLocation().getBlockZ();
+		System.out.println(x2+","+z2);
 	}
 }
 

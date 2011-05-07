@@ -30,14 +30,15 @@ public class ChronosFixedZone extends ChronosZone
 				new Time
 				(
 				Integer.decode(cargs.pop()),
-				Integer.decode(cargs.pop()).equals("rel")
+				cargs.pop().equals("rel")
 				)
 			);
 	}
 	
 	public static String IsValid(Stack<String> cargs)
 	{
-		if(StringIsNumber(cargs.get(1)) && (cargs.get(2).equalsIgnoreCase("ab")||cargs.get(6).equalsIgnoreCase("rel")))
+		int len = cargs.size();
+		if(StringIsNumber(cargs.get(len-2)) && (cargs.get(len-3).equalsIgnoreCase("ab")||cargs.get(len-3).equalsIgnoreCase("rel")))
 		{
 			return null;
 		}
@@ -53,12 +54,12 @@ public class ChronosFixedZone extends ChronosZone
 	@Override
 	public Time getTime(Player player)
 	{
-		return null;
+		return time;
 	}
 	
 	@Override
 	public String GetDescription()
 	{
-		return String.format("%1$: %2$; world: %3$; time: %4$",Id(),"fixed",worldName,time.toString());
+		return String.format("%1$d: %2$s; world: %3$s; time: %4$s",Id(),"fixed",worldName,time.toString());
 	}
 }

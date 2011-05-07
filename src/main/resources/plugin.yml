@@ -1,8 +1,8 @@
-name: Chronoss
+name: Chronos
 main: need.chronos.Chronos
 version: 0.0.1
 commands:
-   onan:
-    description: Sends.
+   chronos:
+    description: prefix for chronos commands
     usage:
      /<command>
